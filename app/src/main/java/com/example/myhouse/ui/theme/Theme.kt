@@ -18,16 +18,14 @@ import androidx.core.view.WindowCompat
 
 private val DarkColorScheme = darkColorScheme(
     surface = Color(0xFF191c1d),
-    onSurface = Color(0xFF191c1d),
-    background = Color(0xFF191c1d),
     onBackground = Color(0xFF191c1d),
+    onSurface = Color(0xFFe1e3e3),
 )
 
 private val LightColorScheme = lightColorScheme(
     background = Color(0xFFfafdfd),
-    onSurface = Color(0xFFe1e3e3),
-    onBackground = Color(0xFFe1e3e3),
     surface = Color(0xFFfafdfd),
+    onSurface = Color(0xFF191c1d),
 )
 
 @Composable
@@ -42,7 +40,6 @@ fun MyHouseTheme(
             val context = LocalContext.current
             if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
-
         darkTheme -> DarkColorScheme
         else -> LightColorScheme
     }
@@ -50,8 +47,11 @@ fun MyHouseTheme(
     if (!view.isInEditMode) {
         SideEffect {
             val window = (view.context as Activity).window
-            window.statusBarColor = colorScheme.primary.toArgb()
-            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
+            window.statusBarColor = colorScheme.background.toArgb() // here change the color
+            window.navigationBarColor = colorScheme.background.toArgb() // here change the color
+
+            // here change the status bar element color
+            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = !darkTheme
         }
     }
 
