@@ -1,16 +1,20 @@
 plugins {
-    id("com.android.application")
-    id("org.jetbrains.kotlin.android")
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.jetbrains.android)
+    id("dagger.hilt.android.plugin")
+    id("kotlin-kapt")
+    id("kotlin-parcelize")
+    id("kotlinx-serialization")
 }
 
 android {
     namespace = "com.example.myhouse"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.example.myhouse"
         minSdk = 24
-        targetSdk = 33
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
@@ -40,9 +44,9 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.3"
+        kotlinCompilerExtensionVersion = libs.versions.androidxComposeCompiler.get()
     }
-    packaging {
+    packagingOptions {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
@@ -51,19 +55,54 @@ android {
 
 dependencies {
 
-    implementation("androidx.core:core-ktx:1.9.0")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
-    implementation("androidx.activity:activity-compose:1.7.2")
-    implementation(platform("androidx.compose:compose-bom:2023.03.00"))
-    implementation("androidx.compose.ui:ui")
-    implementation("androidx.compose.ui:ui-graphics")
-    implementation("androidx.compose.ui:ui-tooling-preview")
-    implementation("androidx.compose.material3:material3")
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-    androidTestImplementation(platform("androidx.compose:compose-bom:2023.03.00"))
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4")
-    debugImplementation("androidx.compose.ui:ui-tooling")
-    debugImplementation("androidx.compose.ui:ui-test-manifest")
+    //Compose
+    val composeBom = platform(libs.androidx.compose.bom)
+    implementation(composeBom)
+    implementation(libs.androidx.core)
+    implementation(libs.androidx.compose.activity)
+    implementation(libs.androidx.compose.animation)
+    implementation(libs.androidx.compose.foundation)
+    implementation(libs.androidx.compose.foundationLayout)
+    implementation(libs.androidx.compose.material)
+    implementation(libs.androidx.compose.iconExtended)
+    implementation(libs.androidx.compose.material3)
+    implementation(libs.androidx.compose.runtime)
+    implementation(libs.androidx.compose.toolingPreview)
+    implementation(libs.androidx.compose.ui)
+    implementation(libs.androidx.compose.ui.utils)
+    implementation(libs.androidx.compose.uiTestManifest)
+    implementation(libs.androidx.compose.uiTest)
+    implementation(libs.androidx.compose.lifecycl.runtime)
+
+    //Debug
+    debugImplementation(libs.androidx.compose.tooling)
+    debugImplementation(libs.androidx.compose.toolingPreview)
+
+    //Test
+    androidTestImplementation(composeBom)
+
+    //ImageLoader
+    implementation(libs.coil.compose)
+
+    //System UI Controller
+    implementation(libs.google.accompanist.systemUiController)
+
+    //Hilt
+    implementation(libs.google.hilt.android)
+    implementation(libs.androidx.startup)
+    kapt(libs.androidx.hilt.compiler)
+    kapt(libs.google.hilt.compiler)
+    kapt(libs.google.hilt.android.compiler)
+    kaptAndroidTest(libs.google.hilt.compiler)
+
+    //Realm
+    implementation(libs.realm)
+
+    //Ktor
+    implementation(libs.ktor.android)
+    implementation(libs.ktor.core)
+    implementation(libs.ktor.serialization)
+
+    //ImmutableCollections
+    implementation(libs.jetbrains.collections.immutable)
 }
