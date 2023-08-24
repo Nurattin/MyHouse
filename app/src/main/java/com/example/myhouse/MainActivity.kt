@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.pager.HorizontalPager
@@ -17,6 +18,7 @@ import androidx.core.view.WindowCompat
 import com.example.myhouse.ui.base.MyHouseScreens
 import com.example.myhouse.ui.base.rememberMyHouseAppState
 import com.example.myhouse.ui.components.MyHouseTopAppBar
+import com.example.myhouse.ui.screens.camera.CameraScreen
 import com.example.myhouse.ui.theme.MyHouseTheme
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
@@ -63,7 +65,10 @@ class MainActivity : ComponentActivity() {
                     ) { currentPage ->
                         when (appState.listPages[currentPage]) {
                             MyHouseScreens.Cameras -> {
-
+                                CameraScreen(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                )
                             }
 
                             MyHouseScreens.Doors -> {
