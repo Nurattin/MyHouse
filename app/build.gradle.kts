@@ -103,8 +103,11 @@ dependencies {
     //Ktor
     implementation(libs.ktor.android)
     implementation(libs.ktor.core)
+    implementation(libs.ktor.negotiation)
     implementation(libs.ktor.serialization)
 
     //ImmutableCollections
     implementation(libs.jetbrains.collections.immutable)
+
+    //Serialization
 }
