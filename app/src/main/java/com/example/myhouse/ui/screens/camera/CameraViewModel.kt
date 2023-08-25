@@ -6,9 +6,9 @@ import com.example.myhouse.data.network.util.collectAsResult
 import com.example.myhouse.domain.CameraUseCase
 import com.example.myhouse.domain.model.Camera
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.collections.immutable.PersistentList
-import kotlinx.collections.immutable.persistentListOf
-import kotlinx.collections.immutable.toPersistentList
+import kotlinx.collections.immutable.PersistentMap
+import kotlinx.collections.immutable.persistentMapOf
+import kotlinx.collections.immutable.toPersistentMap
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -32,7 +32,9 @@ class CameraViewModel @Inject constructor(
                 onSuccess = { cameraList ->
                     _cameraUiState.update { currentState ->
                         currentState.copy(
-                            cameraList = cameraList.toPersistentList(),
+                            cameraList = cameraList.groupBy {
+                                it.room ?: "Undefended"
+                            }.toPersistentMap(),
                             isLoading = false,
                             error = null,
                         )
@@ -60,7 +62,7 @@ class CameraViewModel @Inject constructor(
 }
 
 data class CameraUiState(
-    val cameraList: PersistentList<Camera> = persistentListOf(),
+    val cameraList: PersistentMap<String, List<Camera>> = persistentMapOf(),
     val isLoading: Boolean = false,
     val error: String? = null,
 )

@@ -7,9 +7,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.Text
 import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -41,6 +43,7 @@ fun CameraScreen(
         CameraScreenContent(
             modifier = Modifier,
             uiState = uiState,
+            onRefreshClick = viewModel::getCameraList,
         )
         PullRefreshIndicator(
             refreshing = uiState.isLoading,
@@ -54,13 +57,15 @@ fun CameraScreen(
 private fun CameraScreenContent(
     modifier: Modifier = Modifier,
     uiState: CameraUiState,
+    onRefreshClick: () -> Unit,
 ) {
 
     if (uiState.isLoading) {
         MyHouseLoading()
     } else if (!uiState.error.isNullOrEmpty()) {
         MyHouseError(
-            errorMessage = uiState.error
+            errorMessage = uiState.error,
+            onRefreshClick = onRefreshClick,
         )
     } else {
         LazyColumn(
@@ -69,21 +74,31 @@ private fun CameraScreenContent(
             contentPadding = PaddingValues(all = 21.dp),
             verticalArrangement = Arrangement.spacedBy(10.dp),
         ) {
-            items(
-                items = uiState.cameraList,
-                key = { camera ->
-                    camera.id
-                },
-                contentType = {
-                    MyHouseScreens.Cameras
+            uiState.cameraList.forEach { (room, cameraList) ->
+                item {
+                    Text(
+                        text = room,
+                        style = MaterialTheme.typography.titleLarge,
+                        color = MaterialTheme.colorScheme.onSurface,
+                    )
                 }
-            ) { camera ->
-                CameraCard(
-                    modifier = Modifier,
-                    isFavorite = camera.favorites,
-                    image = camera.snapshot,
-                    name = camera.name,
-                )
+                items(
+                    items = cameraList,
+                    key = { camera ->
+                        camera.id
+                    },
+                    contentType = {
+                        MyHouseScreens.Cameras
+                    }
+                ) { camera ->
+                    CameraCard(
+                        modifier = Modifier,
+                        isFavorite = camera.favorites,
+                        image = camera.snapshot,
+                        name = camera.name,
+                        isShield = camera.rec,
+                    )
+                }
             }
         }
     }
