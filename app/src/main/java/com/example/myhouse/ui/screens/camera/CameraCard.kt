@@ -26,7 +26,7 @@ fun CameraCard(
     modifier: Modifier = Modifier,
     isFavorite: Boolean,
     name: String,
-    image: String,
+    image: String?,
 ) {
     val swipeableState = rememberSwipeableState(
         initialValue = 0,

@@ -71,6 +71,7 @@ dependencies {
     implementation(libs.androidx.compose.runtime)
     implementation(libs.androidx.compose.toolingPreview)
     implementation(libs.androidx.compose.ui)
+    implementation(libs.androidx.compose.viewModel)
     implementation(libs.androidx.compose.ui.utils)
     implementation(libs.androidx.compose.uiTestManifest)
     implementation(libs.androidx.compose.uiTest)

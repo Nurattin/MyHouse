@@ -1,8 +1,8 @@
 package com.example.myhouse.data.network
 
 import com.example.myhouse.data.di.IoDispatcher
-import com.example.myhouse.data.network.model.CameraDto
-import com.example.myhouse.data.network.model.DoorDto
+import com.example.myhouse.data.network.model.CameraItem.Data.CameraDto
+import com.example.myhouse.data.network.model.DoorItem.DoorDto
 import com.example.myhouse.data.network.model.toCamera
 import com.example.myhouse.data.network.model.toDoor
 import com.example.myhouse.domain.model.Camera
@@ -18,10 +18,10 @@ class MyHouseRepositoryImpl @Inject constructor(
     @IoDispatcher val ioDispatcher: CoroutineDispatcher,
 ) : MyHouseRepository {
     override fun getCameras(): Flow<List<Camera>> = flow {
-        emit(api.getCameras().map(CameraDto::toCamera))
+        emit(api.getCameras().data.cameraDtos.map(CameraDto::toCamera))
     }.flowOn(ioDispatcher)
 
     override fun getDoors(): Flow<List<Door>> = flow {
-        emit(api.getDoors().map(DoorDto::toDoor))
+        emit(api.getDoors().data.map(DoorDto::toDoor))
     }.flowOn(ioDispatcher)
 }

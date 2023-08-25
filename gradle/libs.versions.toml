@@ -10,6 +10,8 @@ realm = "1.6.1"
 
 startup = "1.1.1"
 
+viewmodelCompose = "2.6.1"
+
 ktor = "2.3.3"
 
 activityCompose = "1.7.2"
@@ -57,6 +59,7 @@ realm = { group = "io.realm.kotlin", name = "library-base", version.ref = "realm
 
 #Lifecycle
 androidx-compose-lifecycl-runtime = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "lifecycleRuntime" }
+androidx-compose-viewModel = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "viewmodelCompose" }
 
 #Coil
 coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
