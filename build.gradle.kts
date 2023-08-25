@@ -18,3 +18,9 @@ plugins {
     alias(libs.plugins.realm) apply false
     alias(libs.plugins.android.library) apply false
 }
+
+tasks {
+    register("clean", Delete::class) {
+        delete(rootProject.buildDir)
+    }
+}

@@ -11,6 +11,9 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+-keepnames class io.realm.kotlin.types.RealmObject
+-keepnames class com.example.myhouse.data.local.model.DoorEntity
+-keepnames class com.example.myhouse.data.local.model.CameraEntity
 
 # Uncomment this to preserve the line number information for
 # debugging stack traces.

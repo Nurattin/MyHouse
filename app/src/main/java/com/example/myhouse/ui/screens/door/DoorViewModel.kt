@@ -6,6 +6,7 @@ import com.example.myhouse.data.network.util.collectAsResult
 import com.example.myhouse.domain.DoorChangeNameUseCase
 import com.example.myhouse.domain.DoorUseCase
 import com.example.myhouse.domain.model.Door
+import com.example.myhouse.util.mapNestedList
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.PersistentMap
 import kotlinx.collections.immutable.persistentMapOf
@@ -28,13 +29,21 @@ class DoorViewModel @Inject constructor(
         getDoorList()
     }
 
+    fun setFavorite(doorId: Int) {
+        _doorUiState.update { currentState ->
+            currentState.copy(
+                doorList = currentState.doorList.mapNestedList { door ->
+                    door.takeIf { it.id == doorId }?.copy(favorites = !door.favorites) ?: door
+                }.toPersistentMap()
+            )
+        }
+    }
+
     fun changeDoorName(doorId: Int, newName: String) {
         _doorUiState.update { currentState ->
             currentState.copy(
-                doorList = currentState.doorList.mapValues { doors ->
-                    doors.value.map { door ->
-                        door.takeIf { it.id == doorId }?.copy(name = newName) ?: door
-                    }
+                doorList = currentState.doorList.mapNestedList { door ->
+                    door.takeIf { it.id == doorId }?.copy(name = newName) ?: door
                 }.toPersistentMap()
             )
         }
