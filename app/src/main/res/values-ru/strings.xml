@@ -3,4 +3,5 @@
     <string name="app_name">Мой Дом</string>
     <string name="cameras">Камеры</string>
     <string name="doors">Двери</string>
+    <string name="refresh">Обновить</string>
 </resources>

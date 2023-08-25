@@ -7,9 +7,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.Text
 import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -43,7 +45,8 @@ fun DoorScreen(
         DoorScreenContent(
             modifier = Modifier,
             uiState = uiState,
-            onDoorNameChange = viewModel::changeDoorName
+            onDoorNameChange = viewModel::changeDoorName,
+            onRefreshClick = viewModel::getDoorList,
         )
         PullRefreshIndicator(
             refreshing = uiState.isLoading,
@@ -58,12 +61,14 @@ private fun DoorScreenContent(
     modifier: Modifier = Modifier,
     uiState: DoorUiState,
     onDoorNameChange: (Int, String) -> Unit,
+    onRefreshClick: () -> Unit,
 ) {
     if (uiState.isLoading) {
         MyHouseLoading()
     } else if (!uiState.error.isNullOrEmpty()) {
         MyHouseError(
-            errorMessage = uiState.error
+            errorMessage = uiState.error,
+            onRefreshClick = onRefreshClick,
         )
     } else {
         LazyColumn(
@@ -72,24 +77,33 @@ private fun DoorScreenContent(
             contentPadding = PaddingValues(all = 21.dp),
             verticalArrangement = Arrangement.spacedBy(10.dp),
         ) {
-            items(
-                items = uiState.doorList,
-                key = { door ->
-                    door.id
-                },
-                contentType = {
-                    MyHouseScreens.Doors
+            uiState.doorList.forEach { (room, doors) ->
+                item {
+                    Text(
+                        text = room,
+                        style = MaterialTheme.typography.titleLarge,
+                        color = MaterialTheme.colorScheme.onSurface,
+                    )
                 }
-            ) { door ->
-                DoorCard(
-                    modifier = Modifier,
-                    isFavorite = door.favorites,
-                    image = door.snapshot,
-                    name = door.name,
-                    onNameChange = { newName ->
-                        onDoorNameChange(door.id, newName)
+                items(
+                    items = doors,
+                    key = { door ->
+                        door.id
+                    },
+                    contentType = {
+                        MyHouseScreens.Doors
                     }
-                )
+                ) { door ->
+                    DoorCard(
+                        modifier = Modifier,
+                        isFavorite = door.favorites,
+                        image = door.snapshot,
+                        name = door.name,
+                        onNameChange = { newName ->
+                            onDoorNameChange(door.id, newName)
+                        }
+                    )
+                }
             }
         }
     }

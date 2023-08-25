@@ -1,14 +1,18 @@
 package com.example.myhouse.ui.screens.camera
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Shield
 import androidx.compose.material.icons.rounded.Star
 import androidx.compose.material.icons.rounded.StarBorder
 import androidx.compose.material.rememberSwipeableState
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -27,6 +31,7 @@ fun CameraCard(
     isFavorite: Boolean,
     name: String,
     image: String?,
+    isShield: Boolean = false,
 ) {
     val swipeableState = rememberSwipeableState(
         initialValue = 0,
@@ -46,31 +51,39 @@ fun CameraCard(
             )
         },
         halfContent = {
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                shape = MaterialTheme.shapes.medium,
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.background,
-                ),
-            )
-            {
+            Column {
                 CameraBanner(
                     image = image,
                     isFavorite = isFavorite,
                     isRecorded = true,
                 )
 
-                Text(
+                Row(
                     modifier = Modifier
+                        .fillMaxWidth()
                         .padding(
                             horizontal = 16.dp,
                             vertical = 26.dp,
                         ),
-                    text = name,
-                    style = MaterialTheme.typography.bodyLarge,
-                    color = MaterialTheme.colorScheme.onSurface,
-                )
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(
+                        modifier = Modifier,
+                        text = name,
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = MaterialTheme.colorScheme.onSurface,
+                    )
+                    if (isShield) {
+                        Icon(
+                            modifier = Modifier
+                                .size(30.dp),
+                            imageVector = Icons.Outlined.Shield,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.onSurface,
+                        )
+                    }
+                }
             }
         }
     )

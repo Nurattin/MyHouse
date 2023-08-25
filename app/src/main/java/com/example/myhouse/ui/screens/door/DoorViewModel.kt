@@ -7,9 +7,9 @@ import com.example.myhouse.domain.DoorChangeNameUseCase
 import com.example.myhouse.domain.DoorUseCase
 import com.example.myhouse.domain.model.Door
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.collections.immutable.PersistentList
-import kotlinx.collections.immutable.persistentListOf
-import kotlinx.collections.immutable.toPersistentList
+import kotlinx.collections.immutable.PersistentMap
+import kotlinx.collections.immutable.persistentMapOf
+import kotlinx.collections.immutable.toPersistentMap
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -31,9 +31,11 @@ class DoorViewModel @Inject constructor(
     fun changeDoorName(doorId: Int, newName: String) {
         _doorUiState.update { currentState ->
             currentState.copy(
-                doorList = currentState.doorList.map { door ->
-                    if (door.id == doorId) door.copy(name = newName) else door
-                }.toPersistentList()
+                doorList = currentState.doorList.mapValues { doors ->
+                    doors.value.map { door ->
+                        door.takeIf { it.id == doorId }?.copy(name = newName) ?: door
+                    }
+                }.toPersistentMap()
             )
         }
         viewModelScope.launch {
@@ -47,7 +49,9 @@ class DoorViewModel @Inject constructor(
                 onSuccess = { doorList ->
                     _doorUiState.update { currentState ->
                         currentState.copy(
-                            doorList = doorList.toPersistentList(),
+                            doorList = doorList.groupBy {
+                                it.room ?: "Undefended"
+                            }.toPersistentMap(),
                             isLoading = false,
                             error = null,
                         )
@@ -75,7 +79,7 @@ class DoorViewModel @Inject constructor(
 }
 
 data class DoorUiState(
-    val doorList: PersistentList<Door> = persistentListOf(),
+    val doorList: PersistentMap<String, List<Door>> = persistentMapOf(),
     val isLoading: Boolean = false,
     val error: String? = null,
 )

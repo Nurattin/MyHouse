@@ -1,6 +1,7 @@
 package com.example.myhouse.ui.screens.door
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -89,57 +90,59 @@ fun DoorCard(
             }
         },
         halfContent = {
-            if (!image.isNullOrBlank()) {
-                CameraBanner(
-                    image = image,
-                    isFavorite = isFavorite,
-                    isRecorded = false,
-                )
-            }
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(
-                        horizontal = 16.dp,
-                        vertical = 26.dp,
-                    ),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                BasicTextField(
+            Column {
+                if (!image.isNullOrBlank()) {
+                    CameraBanner(
+                        image = image,
+                        isFavorite = isFavorite,
+                        isRecorded = false,
+                    )
+                }
+                Row(
                     modifier = Modifier
-                        .weight(1f)
-                        .focusRequester(focusRequest)
-                        .onFocusChanged {
-                            if (!it.isFocused) {
+                        .fillMaxWidth()
+                        .padding(
+                            horizontal = 16.dp,
+                            vertical = 26.dp,
+                        ),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    BasicTextField(
+                        modifier = Modifier
+                            .weight(1f)
+                            .focusRequester(focusRequest)
+                            .onFocusChanged {
+                                if (!it.isFocused) {
+                                    canChangeText = false
+                                }
+                            },
+                        cursorBrush = SolidColor(MaterialTheme.colorScheme.onSurface),
+                        value = currentText,
+                        onValueChange = {
+                            currentText = it
+                        },
+                        enabled = canChangeText,
+                        textStyle = MaterialTheme.typography.bodyLarge
+                            .copy(color = MaterialTheme.colorScheme.onSurface),
+                        keyboardOptions = KeyboardOptions(
+                            imeAction = ImeAction.Done
+                        ),
+                        keyboardActions = KeyboardActions(
+                            onDone = {
+                                onNameChange(currentText)
                                 canChangeText = false
                             }
-                        },
-                    cursorBrush = SolidColor(MaterialTheme.colorScheme.onSurface),
-                    value = currentText,
-                    onValueChange = {
-                        currentText = it
-                    },
-                    enabled = canChangeText,
-                    textStyle = MaterialTheme.typography.bodyLarge
-                        .copy(color = MaterialTheme.colorScheme.onSurface),
-                    keyboardOptions = KeyboardOptions(
-                        imeAction = ImeAction.Done
-                    ),
-                    keyboardActions = KeyboardActions(
-                        onDone = {
-                            onNameChange(currentText)
-                            canChangeText = false
-                        }
+                        )
                     )
-                )
-                Icon(
-                    modifier = Modifier
-                        .size(30.dp),
-                    imageVector = Icons.Outlined.Lock,
-                    contentDescription = null,
-                    tint = TealBlue,
-                )
+                    Icon(
+                        modifier = Modifier
+                            .size(30.dp),
+                        imageVector = Icons.Outlined.Lock,
+                        contentDescription = null,
+                        tint = TealBlue,
+                    )
+                }
             }
         }
     )
