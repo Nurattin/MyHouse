@@ -16,6 +16,7 @@ import io.ktor.serialization.kotlinx.json.json
 import io.realm.kotlin.Realm
 import io.realm.kotlin.RealmConfiguration
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.serialization.json.Json
 import javax.inject.Singleton
 
 @Module
@@ -51,7 +52,12 @@ object DataModule {
         return MyHouseApiImpl(
             api = HttpClient(Android) {
                 install(ContentNegotiation) {
-                    json()
+                    json(
+                        Json {
+                            ignoreUnknownKeys = true
+                            coerceInputValues = true
+                        }
+                    )
                 }
 
                 install(HttpTimeout) {

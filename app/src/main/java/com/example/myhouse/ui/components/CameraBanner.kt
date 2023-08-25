@@ -24,7 +24,7 @@ import com.example.myhouse.ui.theme.GoldenrodYellow
 @Composable
 fun CameraBanner(
     modifier: Modifier = Modifier,
-    image: String,
+    image: String?,
     isRecorded: Boolean,
     isFavorite: Boolean,
 ) {

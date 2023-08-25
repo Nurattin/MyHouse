@@ -22,7 +22,9 @@ import com.example.myhouse.ui.screens.camera.CameraScreen
 import com.example.myhouse.ui.screens.door.DoorScreen
 import com.example.myhouse.ui.theme.MyHouseTheme
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalFoundationApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {

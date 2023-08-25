@@ -4,5 +4,6 @@ data class Door(
     val name: String,
     val room: String?,
     val id: Int,
-    val favorites: Boolean
+    val snapshot: String?,
+    val favorites: Boolean,
 )
