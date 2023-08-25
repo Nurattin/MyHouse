@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.jetbrains.android)
     id("dagger.hilt.android.plugin")
     id("kotlin-kapt")
+    id("io.realm.kotlin")
     id("kotlin-parcelize")
     id("kotlinx-serialization")
 }
@@ -99,7 +100,8 @@ dependencies {
     kaptAndroidTest(libs.google.hilt.compiler)
 
     //Realm
-    implementation(libs.realm)
+    implementation(libs.realm.base)
+    implementation(libs.realm.sync)
 
     //Ktor
     implementation(libs.ktor.android)
@@ -110,5 +112,6 @@ dependencies {
     //ImmutableCollections
     implementation(libs.jetbrains.collections.immutable)
 
-    //Serialization
+    //Coroutine
+    implementation(libs.kotlin.coroutines)
 }

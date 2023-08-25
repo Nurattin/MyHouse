@@ -26,9 +26,9 @@ class CameraViewModel @Inject constructor(
         getCameraList()
     }
 
-    fun getCameraList() {
+    fun getCameraList(refresh: Boolean = false) {
         viewModelScope.launch {
-            getCameraUseCase().collectAsResult(
+            getCameraUseCase(refresh).collectAsResult(
                 onSuccess = { cameraList ->
                     _cameraUiState.update { currentState ->
                         currentState.copy(

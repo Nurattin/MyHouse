@@ -6,5 +6,5 @@ import javax.inject.Inject
 class DoorUseCase @Inject constructor(
     private val repo: MyHouseRepository,
 ) {
-    operator fun invoke() = repo.getDoors()
+    operator fun invoke(refresh: Boolean = false) = repo.getDoors(refresh)
 }

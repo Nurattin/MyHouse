@@ -28,6 +28,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import com.example.myhouse.ui.components.AdditionalFeaturesButton
@@ -44,10 +45,14 @@ fun DoorCard(
     modifier: Modifier = Modifier,
     image: String?,
     isFavorite: Boolean,
+    onNameChange: (String) -> Unit,
     name: String,
 ) {
     var canChangeText by remember {
         mutableStateOf(false)
+    }
+    var currentText by remember(name, canChangeText) {
+        mutableStateOf(name)
     }
     val focusRequest = remember { FocusRequester() }
     val coroutineScope = rememberCoroutineScope()
@@ -103,14 +108,18 @@ fun DoorCard(
             ) {
                 BasicTextField(
                     modifier = Modifier
+                        .weight(1f)
                         .focusRequester(focusRequest)
                         .onFocusChanged {
                             if (!it.isFocused) {
                                 canChangeText = false
                             }
                         },
-                    value = name,
-                    onValueChange = {},
+                    cursorBrush = SolidColor(MaterialTheme.colorScheme.onSurface),
+                    value = currentText,
+                    onValueChange = {
+                        currentText = it
+                    },
                     enabled = canChangeText,
                     textStyle = MaterialTheme.typography.bodyLarge
                         .copy(color = MaterialTheme.colorScheme.onSurface),
@@ -119,6 +128,7 @@ fun DoorCard(
                     ),
                     keyboardActions = KeyboardActions(
                         onDone = {
+                            onNameChange(currentText)
                             canChangeText = false
                         }
                     )

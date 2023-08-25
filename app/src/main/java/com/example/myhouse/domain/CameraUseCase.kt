@@ -6,5 +6,5 @@ import javax.inject.Inject
 class CameraUseCase @Inject constructor(
     private val repo: MyHouseRepository
 ) {
-    operator fun invoke() = repo.getCameras()
+    operator fun invoke(refresh: Boolean = false) = repo.getCameras(refresh)
 }
