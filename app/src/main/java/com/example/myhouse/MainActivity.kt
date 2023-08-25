@@ -19,6 +19,7 @@ import com.example.myhouse.ui.base.MyHouseScreens
 import com.example.myhouse.ui.base.rememberMyHouseAppState
 import com.example.myhouse.ui.components.MyHouseTopAppBar
 import com.example.myhouse.ui.screens.camera.CameraScreen
+import com.example.myhouse.ui.screens.door.DoorScreen
 import com.example.myhouse.ui.theme.MyHouseTheme
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
@@ -61,7 +62,10 @@ class MainActivity : ComponentActivity() {
                     HorizontalPager(
                         modifier = Modifier
                             .padding(innerPadding),
-                        state = appState.pagerState
+                        state = appState.pagerState,
+                        key = {
+                            appState.listPages[it].name
+                        },
                     ) { currentPage ->
                         when (appState.listPages[currentPage]) {
                             MyHouseScreens.Cameras -> {
@@ -72,7 +76,10 @@ class MainActivity : ComponentActivity() {
                             }
 
                             MyHouseScreens.Doors -> {
-
+                                DoorScreen(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                )
                             }
                         }
                     }
