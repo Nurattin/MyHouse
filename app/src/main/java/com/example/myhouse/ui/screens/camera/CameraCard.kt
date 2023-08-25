@@ -32,10 +32,14 @@ fun CameraCard(
     name: String,
     image: String?,
     isShield: Boolean = false,
+    onSetFavorite: () -> Unit,
 ) {
     val swipeableState = rememberSwipeableState(
         initialValue = 0,
-        confirmStateChange = { false },
+        confirmStateChange = {
+            if (it == 1) onSetFavorite()
+            false
+        },
     )
 
     MyHouseSwipeableCard(

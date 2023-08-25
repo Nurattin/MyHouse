@@ -47,6 +47,7 @@ fun DoorScreen(
             uiState = uiState,
             onDoorNameChange = viewModel::changeDoorName,
             onRefreshClick = viewModel::getDoorList,
+            onSetFavorite = viewModel::setFavorite,
         )
         PullRefreshIndicator(
             refreshing = uiState.isLoading,
@@ -62,6 +63,7 @@ private fun DoorScreenContent(
     uiState: DoorUiState,
     onDoorNameChange: (Int, String) -> Unit,
     onRefreshClick: () -> Unit,
+    onSetFavorite: (Int) -> Unit,
 ) {
     if (uiState.isLoading) {
         MyHouseLoading()
@@ -101,6 +103,9 @@ private fun DoorScreenContent(
                         name = door.name,
                         onNameChange = { newName ->
                             onDoorNameChange(door.id, newName)
+                        },
+                        onSetFavorite = {
+                            onSetFavorite(door.id)
                         }
                     )
                 }

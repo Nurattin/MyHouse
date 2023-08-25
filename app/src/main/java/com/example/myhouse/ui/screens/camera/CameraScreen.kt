@@ -44,6 +44,7 @@ fun CameraScreen(
             modifier = Modifier,
             uiState = uiState,
             onRefreshClick = viewModel::getCameraList,
+            onSetFavorite = viewModel::setFavorite,
         )
         PullRefreshIndicator(
             refreshing = uiState.isLoading,
@@ -58,6 +59,7 @@ private fun CameraScreenContent(
     modifier: Modifier = Modifier,
     uiState: CameraUiState,
     onRefreshClick: () -> Unit,
+    onSetFavorite: (Int) -> Unit,
 ) {
 
     if (uiState.isLoading) {
@@ -97,6 +99,9 @@ private fun CameraScreenContent(
                         image = camera.snapshot,
                         name = camera.name,
                         isShield = camera.rec,
+                        onSetFavorite = {
+                            onSetFavorite(camera.id)
+                        }
                     )
                 }
             }

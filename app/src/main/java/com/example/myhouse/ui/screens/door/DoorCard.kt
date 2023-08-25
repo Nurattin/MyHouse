@@ -46,8 +46,9 @@ fun DoorCard(
     modifier: Modifier = Modifier,
     image: String?,
     isFavorite: Boolean,
-    onNameChange: (String) -> Unit,
     name: String,
+    onNameChange: (String) -> Unit,
+    onSetFavorite: () -> Unit,
 ) {
     var canChangeText by remember {
         mutableStateOf(false)
@@ -84,7 +85,7 @@ fun DoorCard(
                 )
                 AdditionalFeaturesButton(
                     icon = if (isFavorite) Icons.Rounded.Star else Icons.Rounded.StarBorder,
-                    onClick = { /*TODO*/ },
+                    onClick = onSetFavorite,
                     color = GoldenrodYellow,
                 )
             }

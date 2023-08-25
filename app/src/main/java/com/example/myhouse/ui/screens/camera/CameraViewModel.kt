@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.myhouse.data.network.util.collectAsResult
 import com.example.myhouse.domain.CameraUseCase
 import com.example.myhouse.domain.model.Camera
+import com.example.myhouse.util.mapNestedList
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.PersistentMap
 import kotlinx.collections.immutable.persistentMapOf
@@ -24,6 +25,16 @@ class CameraViewModel @Inject constructor(
 
     init {
         getCameraList()
+    }
+
+    fun setFavorite(doorId: Int) {
+        _cameraUiState.update { currentState ->
+            currentState.copy(
+                cameraList = currentState.cameraList.mapNestedList { camera ->
+                    camera.takeIf { it.id == doorId }?.copy(favorites = !camera.favorites) ?: camera
+                }.toPersistentMap()
+            )
+        }
     }
 
     fun getCameraList(refresh: Boolean = false) {
