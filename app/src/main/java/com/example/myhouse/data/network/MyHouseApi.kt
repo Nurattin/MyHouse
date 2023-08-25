@@ -1,5 +1,10 @@
 package com.example.myhouse.data.network
 
-interface MyHouseApi{
+import com.example.myhouse.data.network.model.CameraDto
+import com.example.myhouse.data.network.model.DoorDto
 
+interface MyHouseApi {
+    suspend fun getCameras(): List<CameraDto>
+    suspend fun getDoors(): List<DoorDto>
 }
+
