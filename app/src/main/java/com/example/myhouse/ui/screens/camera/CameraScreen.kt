@@ -6,9 +6,10 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.pullrefresh.PullRefreshIndicator
+import androidx.compose.material.pullrefresh.pullRefresh
+import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -17,18 +18,36 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.myhouse.ui.base.MyHouseScreens
+import com.example.myhouse.ui.components.MyHouseError
+import com.example.myhouse.ui.components.MyHouseLoading
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun CameraScreen(
     modifier: Modifier = Modifier,
 ) {
     val viewModel: CameraViewModel = viewModel()
     val uiState by viewModel.cameraUiState.collectAsStateWithLifecycle()
-
-    CameraScreenContent(
-        modifier = modifier,
-        uiState = uiState,
+    val pullState = rememberPullRefreshState(
+        refreshing = uiState.isLoading,
+        onRefresh = { viewModel.getCameraList(true) }
     )
+
+    Box(
+        modifier = modifier.pullRefresh(
+            state = pullState,
+        )
+    ) {
+        CameraScreenContent(
+            modifier = Modifier,
+            uiState = uiState,
+        )
+        PullRefreshIndicator(
+            refreshing = uiState.isLoading,
+            state = pullState,
+            modifier = Modifier.align(Alignment.TopCenter)
+        )
+    }
 }
 
 @Composable
@@ -36,24 +55,13 @@ private fun CameraScreenContent(
     modifier: Modifier = Modifier,
     uiState: CameraUiState,
 ) {
+
     if (uiState.isLoading) {
-        Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
-        ) {
-            CircularProgressIndicator()
-        }
+        MyHouseLoading()
     } else if (!uiState.error.isNullOrEmpty()) {
-        Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                text = uiState.error,
-                style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onSurface,
-            )
-        }
+        MyHouseError(
+            errorMessage = uiState.error
+        )
     } else {
         LazyColumn(
             modifier = modifier

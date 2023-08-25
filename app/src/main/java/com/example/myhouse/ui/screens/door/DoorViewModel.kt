@@ -3,6 +3,7 @@ package com.example.myhouse.ui.screens.door
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.myhouse.data.network.util.collectAsResult
+import com.example.myhouse.domain.DoorChangeNameUseCase
 import com.example.myhouse.domain.DoorUseCase
 import com.example.myhouse.domain.model.Door
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,17 +19,31 @@ import javax.inject.Inject
 @HiltViewModel
 class DoorViewModel @Inject constructor(
     private val getDoorUseCase: DoorUseCase,
+    private val changeNameUseCase: DoorChangeNameUseCase,
 ) : ViewModel() {
     private val _doorUiState = MutableStateFlow(DoorUiState())
     val doorUiState = _doorUiState.asStateFlow()
 
     init {
-        getCameraList()
+        getDoorList()
     }
 
-    fun getCameraList() {
+    fun changeDoorName(doorId: Int, newName: String) {
+        _doorUiState.update { currentState ->
+            currentState.copy(
+                doorList = currentState.doorList.map { door ->
+                    if (door.id == doorId) door.copy(name = newName) else door
+                }.toPersistentList()
+            )
+        }
         viewModelScope.launch {
-            getDoorUseCase().collectAsResult(
+            changeNameUseCase(doorId, newName)
+        }
+    }
+
+    fun getDoorList(refresh: Boolean = false) {
+        viewModelScope.launch {
+            getDoorUseCase(refresh).collectAsResult(
                 onSuccess = { doorList ->
                     _doorUiState.update { currentState ->
                         currentState.copy(

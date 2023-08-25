@@ -2,6 +2,8 @@ package com.example.myhouse.data.di
 
 import com.example.myhouse.data.local.MyHouseMongoRepository
 import com.example.myhouse.data.local.MyHouseMongoRepositoryImpl
+import com.example.myhouse.data.local.model.CameraEntity
+import com.example.myhouse.data.local.model.DoorEntity
 import com.example.myhouse.data.network.MyHouseApi
 import com.example.myhouse.data.network.MyHouseApiImpl
 import dagger.Module
@@ -27,8 +29,12 @@ object DataModule {
     @Provides
     fun provideRealm(): Realm {
         val config = RealmConfiguration.Builder(
-            schema = setOf(),
+            schema = setOf(
+                DoorEntity::class,
+                CameraEntity::class,
+            ),
         )
+            .schemaVersion(1)
             .compactOnLaunch()
             .build()
         return Realm.open(config)

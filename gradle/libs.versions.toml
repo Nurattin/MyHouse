@@ -6,7 +6,7 @@ androidxComposeCompiler = "1.5.1"
 
 immutableCollections = "0.3.5"
 
-realm = "1.6.1"
+realm = "1.10.0"
 
 startup = "1.1.1"
 
@@ -53,9 +53,11 @@ androidx-core = { group = "androidx.core", name = "core-ktx", version.ref = "ktx
 #Kotlin
 kotlin-gradle = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kt" }
 kotlin-serialization = { group = "org.jetbrains.kotlin", name = "kotlin-serialization", version.ref = "kt" }
+kotlin-coroutines = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version = "1.7.2" }
 
 #Mongo Realm
-realm = { group = "io.realm.kotlin", name = "library-base", version.ref = "realm" }
+realm-base = { group = "io.realm.kotlin", name = "library-base", version.ref = "realm" }
+realm-sync = { group = "io.realm.kotlin", name = "library-sync", version.ref = "realm" }
 
 #Lifecycle
 androidx-compose-lifecycl-runtime = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "lifecycleRuntime" }
@@ -88,5 +90,6 @@ jetbrains-collections-immutable = { group = "org.jetbrains.kotlinx", name = "kot
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
 android-library = { id = "com.android.library", version.ref = "androidGradlePlugin" }
+realm = { id = "io.realm.kotlin", version.ref = "realm" }
 jetbrains-android = { id = "org.jetbrains.kotlin.android", version.ref = "kt" }
 jetbrains-kapt = { id = "kotlin-kapt" }
