@@ -59,7 +59,8 @@ fun MyHouseSwipeableCard(
                 coroutineScope.launch {
                     swipeableState.animateTo(0)
                 }
-            }
+            },
+            backgroundColor = MaterialTheme.colorScheme.background
         )
         {
             halfContent()
