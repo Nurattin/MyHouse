@@ -30,7 +30,9 @@ Light Theme            |  Dark Theme
 
 ### Edit mode
 
-<img src="screenshots/edit-mode.png" alt="Edit mode" width="450"> 
+Light Theme            |  Dark Theme
+:-------------------------:|:-------------------------:
+![Camera Edit Mode Light](screenshots/edit-mode.png)  |  ![Door Edit Mode Dark](screenshots/camera-favorite.png)
 
 ## Technology Stack
 
